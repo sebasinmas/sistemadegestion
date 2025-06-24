@@ -1,6 +1,7 @@
 package com.sebastianb;
 
-import static org.junit.Assert.assertArrayEquals;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -20,8 +21,8 @@ public class PersonajeTest {
     public void crearPersonajeConPoderes(){
         Personaje personaje = new Personaje("Sub-Zero", 120, Poder.MEDIO, List.of("Mighty Punch", "Cabezas voladoras"));
         personaje.agregarPoder("Ice Blast");
-
-        assertArrayEquals(List.of("Mighty Punch", "Cabezas voladoras", "Ice Blast") ,personaje.getListaDePoderes());
+        List<String> poderesEsperados= List.of("Mighty Punch", "Cabezas voladoras", "Ice Blast");
+        assertEquals(poderesEsperados ,personaje.getListaDePoderes());
     }
     @Test
     public void agregarPoderAlPersonaje(){
@@ -44,16 +45,14 @@ public class PersonajeTest {
         Personaje personaje = new Personaje("Raiden", 130, Poder.ALTO, List.of("Mighty Punch", "Cabezas voladoras"));
         personaje.agregarPoder("Thunder Strike");
         personaje.agregarPoder("Lightning Bolt");
-        assert personaje.getListaDePoderes().size() == 2;
-        assert personaje.getListaDePoderes().contains("Thunder Strike");
-        assert personaje.getListaDePoderes().contains("Lightning Bolt");
+        assertEquals(List.of("Mighty Punch", "Cabezas voladoras","Thunder Strike" ,"Lightning Bolt"), personaje.listarPoderes());
     }
 
     @Test
     public void personajeToString() {
         Personaje personaje = new Personaje("Kitana", 90, Poder.ALTO, List.of("Mighty Punch", "Cabezas voladoras"));
         personaje.agregarPoder("Fan Throw");
-        String expected = "Personaje: Kitana, Vida: 90, Poder: MEDIO, Poderes: [Fan Throw]";
-        assert personaje.toString().equals(expected);
+        String expected = "Personaje: Kitana, Vida: 90, Poder: ALTO, Poderes: [Mighty Punch, Cabezas voladoras, Fan Throw]";
+        assertEquals(expected, personaje.toString());
     }
 }
