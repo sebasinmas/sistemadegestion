@@ -1,59 +1,63 @@
 package com.sebastianb;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
+import static org.junit.Assert.assertNull;
 import java.util.List;
-import org.hamcrest.Matchers;
 import org.junit.Test;
+
 public class PersonajeRepositoryTest {
 
-    
     @Test
-    public void editarPersonajePorId(){
-        private PersonajeRepository personajeRepository = new PersonajeRepository();
-        //Aqui iría la lógica junto al método utilizado para poder editar un personaje por id
-        Personaje personajeEditado = new Personaje();
+    public void editarPersonajePorId() {
+        PersonajeRepository personajeRepository = new PersonajeRepository();
         PersonajeUpdateDTO dto = new PersonajeUpdateDTO();
+        Personaje p1 = new Personaje("Kitana", 90, Poder.ALTO, List.of("Mighty Punch", "Cabezas voladoras"));
+        personajeRepository.agregar(p1);
+        personajeRepository.editarPorId(1, dto);
 
-        dto.setNombre("KitanaEditada");
-
-        personajeRepository.editarPorId(1,dto);
-
-        String comprobacion = "Personaje: Kitana, Vida: 90, Poder: MEDIO, Poderes: [Fan Throw]";
+        String comprobacion = "Personaje: Kitana, Vida: 90, Poder: ALTO, Poderes: [Mighty Punch, Cabezas voladoras]";
         assertEquals(comprobacion, personajeRepository.getPersonajeById(1).toString());
     }
 
     @Test
-    public void agregarPersonajes(){
+    public void agregarPersonajes() {
         PersonajeRepository personajeRepository = new PersonajeRepository();
 
-        Personaje p1 = new Personaje("Mario Bros", 100, poder.FUERTE, List.of("Yahoo", "Wahoo", "Mamma Mia"));
-        Personaje p2 = new Personaje("Luigi", 95, poder.DEBIL, List.of("Noo", "Boo", "Pizza"));
-        assertNotNull(personajeRepository.agregar(p1, p2)); //Esto es porque quiero que al agregar devuelva lo recién agregado
+        Personaje p1 = new Personaje("Mario Bros", 100, Poder.ALTO, List.of("Yahoo", "Wahoo", "Mamma Mia"));
+        Personaje p2 = new Personaje("Luigi", 95, Poder.BAJO, List.of("Noo", "Boo", "Pizza"));
+        assertNotNull(personajeRepository.agregar(p1, p2)); // Esto es porque quiero que al agregar devuelva lo recién
+                                                            // agregado
     }
 
     @Test
-    public void eliminarPersonajePorId(){
-       PersonajeRepository personajeRepository = new PersonajeRepository();
+    public void eliminarPersonajePorId() {
+        PersonajeRepository personajeRepository = new PersonajeRepository();
 
-        Personaje p1 = new Personaje("Mario Bros", 100, poder.FUERTE, List.of("Yahoo", "Wahoo", "Mamma Mia"));
-        Personaje p2 = new Personaje("Luigi", 95, poder.DEBIL, List.of("Noo", "Boo", "Pizza"));
+        Personaje p1 = new Personaje("Mario Bros", 100, Poder.ALTO, List.of("Yahoo", "Wahoo", "Mamma Mia"));
+        Personaje p2 = new Personaje("Luigi", 95, Poder.BAJO, List.of("Noo", "Boo", "Pizza"));
+        personajeRepository.agregar(p1, p2);
+
+        // Eliminar el personaje con id 2
         personajeRepository.delPersonajeById(2);
-        assertThat(personajeRepository.getPersonajes().size(), Matchers.lessThan(2));
+
+        // Comprobar que el personaje con id 2 ya no existe
+        assertNull(personajeRepository.getPersonajeById(2));
+        // Comprobar que el personaje con id 1 sigue existiendo
+        assertNotNull(personajeRepository.getPersonajeById(1));
+        // Comprobar que solo queda un personaje en el repositorio
+        assertEquals(1, personajeRepository.getPersonajes().size());
     }
 
     @Test
-    public void listarPersonajes(){
+    public void listarPersonajes() {
         // Aquí irá la lógica para conseguir crear un repositorio de personajes de MK.
         PersonajeRepository personajeRepository = new PersonajeRepository();
-        Personaje p1 = new Personaje("Mario Bros", 100, poder.FUERTE, List.of("Yahoo", "Wahoo", "Mamma Mia"));
-        Personaje p2 = new Personaje("Luigi", 95, poder.DEBIL, List.of("Noo", "Boo", "Pizza"));
-        List<Personaje> comprobar = List.of(p1,p2);
-        personajeRepository.agregar(p1,p2);
+        Personaje p1 = new Personaje("Mario Bros", 100, Poder.ALTO, List.of("Yahoo", "Wahoo", "Mamma Mia"));
+        Personaje p2 = new Personaje("Luigi", 95, Poder.BAJO, List.of("Noo", "Boo", "Pizza"));
+        List<Personaje> comprobar = List.of(p1, p2);
+        personajeRepository.agregar(p1, p2);
 
-        assertArrayEquals(comprobar, personajeRepository.listar());
+        assertEquals(comprobar, personajeRepository.listar());
     }
 }
